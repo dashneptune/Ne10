@@ -30,7 +30,7 @@ project(NE10 C CXX ASM)
 
 option(NE10_BUILD_SHARED "Build NE10 shared libraries" OFF)
 option(NE10_BUILD_STATIC "Build NE10 static libraries" ON)
-option(NE10_BUILD_EXAMPLES "Build NE10 examples" ON)
+option(NE10_BUILD_EXAMPLES "Build NE10 examples" OFF)
 
 #hard float abi
 option(NE10_ARM_HARD_FLOAT "Build NE10 for hard float abi" ON)
@@ -49,7 +49,7 @@ if (NE10_BUILD_UNIT_TEST)
 endif()
 
 #check if proper platform is set.
-if((NOT ANDROID_PLATFORM) AND (NOT GNULINUX_PLATFORM) AND (NOT IOS_PLATFORM))
+if((NOT ANDROID_PLATFORM) AND (NOT GNULINUX_PLATFORM) AND (NOT IOS_PLATFORM) AND (NOT BAREMETAL_PLATFORM) )
     message(FATAL_ERROR "No platform is defined! see doc/building.md for build instructions.")
 endif()
 
@@ -79,6 +79,11 @@ if(DEFINED NE10_IOS_TARGET_ARCH)
         set(NE10_TARGET_ARCH "aarch64")
     endif()
 endif()
+
+if (DEFINED BAREMETAL_PLATFORM_TARGET_ARCH)
+  set (NE10_TARGET_ARCH "armv7")
+endif ()
+
 
 message("-- Target architecture: ${NE10_TARGET_ARCH}")
 
